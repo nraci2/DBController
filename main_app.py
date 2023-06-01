@@ -1,10 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 from drawbridge_control import Drawbridge
+from power_control import Power
 
 # Defining Drawbridge object
 
 Bridge = Drawbridge(False, False, False, False)
+Pwr = Power(False,False,False,False)
 
 # Creating Main App
 
@@ -116,6 +118,20 @@ failed_switch = ttk.Checkbutton(
 
 )
 failed_switch.pack()
+
+# Get Power state
+
+powerio =  ttk.Button(
+    app,
+    text = "Power IO",
+    command = Pwr.getio
+    
+    
+)
+powerio.pack()
+
+
+
 
 # END OF TESTING SECTION
 

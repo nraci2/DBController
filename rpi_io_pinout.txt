@@ -1,0 +1,46 @@
+Here is the pinout for the Raspberry Pi (GPIO Pins Allocation):
+
+!!! PLEASE NOTE THAT ALL OF THE PINOUT NUMBERS CORRESPOND TO THE BCM NUMBERS !!!
+!!!         THIS MEANS THAT GPIO2 IS **NOT** PIN 2 ON THE BOARD              !!!
+
+If you need the BCM pinout for the Raspberry PI:
+
+    1. Open a terminal on the RPi (or ssh into it)
+    2. Use the command "pinout"
+    3. There is the pinout info !
+
+        EX: GPIO3 (5) ----> GPIO - Type of pin / 3 - BCM Number of pin / (5) Board Number of pin
+
+
+!!! TO MODIFY PINOUT, PLEASE SEE ./config/rpi_io.ini !!!
+
+
+Main GPIO connector (J8) pinout:
+
+
+Control Relay Module:
+
+    Main Power Relay Control (OUT): GPIO2
+    Drawbridge UP Power Relay Control(OUT): GPIO3
+    Drawbridge DOWN Power Relay Control(OUT):GPIO4
+    Provisional Control Relay (NOT USED)(OUT):GPIO17
+
+Downswitch/Upswitch Monitoring:
+
+    DS1(IN): GPIO0
+    DS2(IN): GPIO5
+    US1(IN): GPIO6
+    US2(IN): GPIO13
+
+EPO Switch Monitoring:
+
+    Emergency Power OFF Monitoring(IN): GPIO12
+
+
+
+
+
+
+
+
+    

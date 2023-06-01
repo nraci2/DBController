@@ -1,5 +1,6 @@
 import time
 import threading
+from power_control import Power
 
 
 class Drawbridge:
