@@ -20,21 +20,21 @@ Main GPIO connector (J8) pinout:
 
 Control Relay Module:
 
-    Main Power Relay Control (OUT): GPIO2
-    Drawbridge UP Power Relay Control(OUT): GPIO3
-    Drawbridge DOWN Power Relay Control(OUT):GPIO4
-    Provisional Control Relay (NOT USED)(OUT):GPIO17
+    Main Power Relay Control (OUT): GPIO17
+    Drawbridge UP Power Relay Control(OUT): GPIO27
+    Drawbridge DOWN Power Relay Control(OUT):GPIO22
+    Provisional Control Relay (NOT USED)(OUT):GPIO4
 
 Downswitch/Upswitch Monitoring:
 
-    DS1(IN): GPIO0
+    DS1(IN): GPIO5
     DS2(IN): GPIO5
-    US1(IN): GPIO6
-    US2(IN): GPIO13
+    US1(IN): GPIO13
+    US2(IN): GPIO26
 
 EPO Switch Monitoring:
 
-    Emergency Power OFF Monitoring(IN): GPIO12
+    Emergency Power OFF Monitoring(IN): GPIO18
 
 
 
