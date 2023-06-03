@@ -6,18 +6,26 @@ from power_control import Power
 # Defining Drawbridge object
 
 Bridge = Drawbridge(False, False, False, False)
-Pwr = Power(False,False,False,False)
+Pwr = Power(False, False, False, False)
 
 # Creating Main App
 
 app = tk.Tk()
 app.title("DBController")
-app.geometry("250x200")
+app.geometry("250x300")
+
+
+# Defining function for window opening
+def on_opening():
+    Pwr.setdownoff()
+    Pwr.setupoff()
+    Pwr.setmainon()
 
 
 # Defining function for window close
 def on_closing():
     Bridge.stop()
+    Pwr.off()
     app.destroy()
 
 
@@ -119,22 +127,30 @@ failed_switch = ttk.Checkbutton(
 )
 failed_switch.pack()
 
-# Get Power state
+# Get Power IO config
 
-powerio =  ttk.Button(
+powerio = ttk.Button(
     app,
-    text = "Power IO",
-    command = Pwr.getio
-    
-    
+    text="Power IO",
+    command=Pwr.getio
+
 )
 powerio.pack()
 
+# Button to reset all relays to unpowered state
 
+reset_button = ttk.Button(
+    app,
+    text="Reset Power to OFF",
+    command=Pwr.off
 
+)
+reset_button.pack()
 
 # END OF TESTING SECTION
 
 # App Main Loop
+app.wait_visibility()
+Pwr.setmainon()
 app.protocol("WM_DELETE_WINDOW", on_closing)
 app.mainloop()

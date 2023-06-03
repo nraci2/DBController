@@ -2,6 +2,8 @@ import time
 import threading
 from power_control import Power
 
+Pwr = Power(False, False, False, False)
+
 
 class Drawbridge:
 
@@ -28,11 +30,17 @@ class Drawbridge:
 
         def moveup():
             while self.ismoving and not self.isup:
-                time.sleep(.5)
-                print("Moving up!")
-                if self.isup:
-                    print("Reached Uplock!")
-                    self.ismoving = False
+
+                if self.ismoving:
+                    time.sleep(0.5)
+                    Pwr.setupon()
+                    print("In transit(Up): " + str(self.ismoving))
+
+            Pwr.setupoff()
+            self.ismoving = False
+
+            if self.isup:
+                print("Uplock: " + str(self.isup))
 
         if not self.ismoving and not self.isup:
             self.ismoving = True
@@ -43,6 +51,8 @@ class Drawbridge:
     def stop(self):
         if self.ismoving:
             self.ismoving = False
+            Pwr.setupoff()
+            Pwr.setdownoff()
             print("STOP!")
 
     # Drawbridge Down Command Method
@@ -56,11 +66,19 @@ class Drawbridge:
 
         def movedown():
             while self.ismoving and not self.isdown:
-                time.sleep(.5)
-                print("Moving down!")
-                if self.isdown:
-                    print("Reached Downlock!")
-                    self.ismoving = False
+
+                if self.ismoving:
+                    time.sleep(0.5)
+                    Pwr.setdownon()
+                    print("In Transit(Down): " + str(self.ismoving))
+
+
+            Pwr.setdownoff()
+            self.ismoving = False
+
+            if self.isdown:
+                print("Downlock: " + str(self.isdown))
+
 
         if not self.ismoving and not self.isdown:
             self.ismoving = True
