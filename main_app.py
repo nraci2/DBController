@@ -12,31 +12,39 @@ Pwr = Power(False, False, False, False)
 
 app = tk.Tk()
 app.title("DBController")
-app.geometry("250x300")
 
 
-# Defining function for window opening
-def on_opening():
+# Defining function for app opening
+def on_app_opening():
     Pwr.setdownoff()
     Pwr.setupoff()
     Pwr.setmainon()
 
 
-# Defining function for window close
-def on_closing():
+# Defining function for app close
+def on_app_closing():
     Bridge.stop()
     Pwr.off()
     app.destroy()
 
 
-# Buttons
+#  UP Button
 
 up_button = ttk.Button(
     app,
     text="UP",
-    command=Bridge.commandup
+    command=Bridge.commandup,
 )
-up_button.pack()
+up_button.grid(
+    row=1,
+    column=1,
+    ipady=50,
+    ipadx=125,
+    sticky=""
+    
+)
+
+# STOP Button
 
 stop_button = ttk.Button(
     app,
@@ -44,7 +52,15 @@ stop_button = ttk.Button(
     command=Bridge.stop
 
 )
-stop_button.pack()
+stop_button.grid(
+    row=2,
+    column=1,
+    ipady=50,
+    ipadx=125,
+    sticky=""
+)
+
+# DOWN Button
 
 down_button = ttk.Button(
     app,
@@ -52,7 +68,15 @@ down_button = ttk.Button(
     command=Bridge.commanddown
 
 )
-down_button.pack()
+down_button.grid(
+    row=3,
+    column=1,
+    ipady=50,
+    ipadx=125,
+    sticky=""
+)
+
+# GetState Button
 
 getstate_button = ttk.Button(
     app,
@@ -60,10 +84,13 @@ getstate_button = ttk.Button(
     command=Bridge.getstate
 
 )
-getstate_button.pack()
+getstate_button.grid(
+    row=1,
+    column=2,
+    sticky=""
+)
 
-
-# START OF TESTING SECTION
+# START OF TESTING SECTION ##############################################################################
 
 # Downlock Simulation
 
@@ -84,10 +111,11 @@ downlock_switch = ttk.Checkbutton(
     command=setdl,
 
 )
-
-downlock_switch.pack()
-
-
+downlock_switch.grid(
+    row=2,
+    column=2,
+    sticky=""
+)
 # Uplock Simulation
 
 def setul():
@@ -107,9 +135,11 @@ uplock_switch = ttk.Checkbutton(
     command=setul
 
 )
-uplock_switch.pack()
-
-
+uplock_switch.grid(
+    row=3,
+    column=2,
+    sticky=""
+)
 # Uplock Simulation
 
 def setfail():
@@ -125,7 +155,7 @@ failed_switch = ttk.Checkbutton(
     command=setfail
 
 )
-failed_switch.pack()
+#failed_switch.pack()
 
 # Get Power IO config
 
@@ -135,8 +165,11 @@ powerio = ttk.Button(
     command=Pwr.getio
 
 )
-powerio.pack()
-
+powerio.grid(
+    row=4,
+    column=2,
+    sticky=""
+)
 # Button to reset all relays to unpowered state
 
 reset_button = ttk.Button(
@@ -145,12 +178,28 @@ reset_button = ttk.Button(
     command=Pwr.off
 
 )
-reset_button.pack()
+reset_button.grid(
+    row=5,
+    column=2,
+    sticky=""
+)
 
-# END OF TESTING SECTION
+exit_button = ttk.Button(
+    app,
+    text="EXIT",
+    command=on_app_closing
+)
+exit_button.grid(
+    row=6,
+    column=2,
+    sticky=""
+)
+
+# END OF TESTING SECTION ##############################################################################
 
 # App Main Loop
+#app.attributes('-fullscreen', True)
 app.wait_visibility()
 Pwr.setmainon()
-app.protocol("WM_DELETE_WINDOW", on_closing)
+app.protocol("WM_DELETE_WINDOW", on_app_closing)
 app.mainloop()
