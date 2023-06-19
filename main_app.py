@@ -3,23 +3,19 @@ from tkinter import ttk
 from drawbridge_control import Drawbridge
 from power_control import Power
 
-print("Welcome to DBController !")
-print("Starting Init...")
+# Creating Main App
+
+app = tk.Tk()
+app.title("DBController")
 
 # Defining Drawbridge object
 
 Bridge = Drawbridge(False, False, False, False)
 Pwr = Power(False, False, False, False)
 
-# Creating Main App
-
-app = tk.Tk()
-app.title("DBController")
-
 
 # Defining function for app opening
 def on_app_opening():
-    print("Init Complete! Powering On...")
     Pwr.setdownoff()
     Pwr.setupoff()
     Pwr.setmainon()
@@ -32,12 +28,13 @@ def on_app_closing():
     app.destroy()
 
 
+
 #  UP Button
 
 up_button = ttk.Button(
     app,
     text="UP",
-    command=Bridge.commandup,
+    command=lambda: [Bridge.commandup(), downfalse()]
 )
 up_button.grid(
     row=1,
@@ -93,6 +90,7 @@ getstate_button.grid(
     column=2,
     sticky=""
 )
+
 
 # START OF TESTING SECTION ##############################################################################
 
