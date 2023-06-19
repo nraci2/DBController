@@ -32,7 +32,6 @@ def on_app_closing():
 #  UP Button
 
 up_button = ttk.Button(
-    app,
     text="UP",
     command=lambda: [Bridge.commandup(), downdisable()]
 )
