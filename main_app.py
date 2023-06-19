@@ -3,6 +3,9 @@ from tkinter import ttk
 from drawbridge_control import Drawbridge
 from power_control import Power
 
+print("Welcome to DBController !")
+print("Starting Init...")
+
 # Defining Drawbridge object
 
 Bridge = Drawbridge(False, False, False, False)
