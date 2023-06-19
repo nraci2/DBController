@@ -47,7 +47,6 @@ up_button.grid(
 # STOP Button
 
 stop_button = ttk.Button(
-    app,
     text="STOP",
     command=lambda: [Bridge.stop(), allenable()]
 
@@ -63,7 +62,6 @@ stop_button.grid(
 # DOWN Button
 
 down_button = ttk.Button(
-    app,
     text="DOWN",
     command=lambda: [Bridge.commanddown(), updisable()]
 
@@ -79,7 +77,6 @@ down_button.grid(
 # GetState Button
 
 getstate_button = ttk.Button(
-    app,
     text="Get State",
     command=Bridge.getstate
 
@@ -119,7 +116,6 @@ def setdl():
 dlv = tk.BooleanVar()
 
 downlock_switch = ttk.Checkbutton(
-    app,
     text="Downlock",
     variable=dlv,
     command=lambda: [setdl(), allenable()]
@@ -143,7 +139,6 @@ def setul():
 ulv = tk.BooleanVar()
 
 uplock_switch = ttk.Checkbutton(
-    app,
     text="Uplock",
     variable=ulv,
     command=lambda: [setul(), allenable()]
@@ -163,7 +158,6 @@ def setfail():
 failv = tk.BooleanVar()
 
 failed_switch = ttk.Checkbutton(
-    app,
     text="Fail",
     variable=failv,
     command=setfail
@@ -174,7 +168,6 @@ failed_switch = ttk.Checkbutton(
 # Get Power IO config
 
 powerio = ttk.Button(
-    app,
     text="Power IO",
     command=Pwr.getio
 
@@ -187,7 +180,6 @@ powerio.grid(
 # Button to reset all relays to unpowered state
 
 reset_button = ttk.Button(
-    app,
     text="Reset Power to OFF",
     command=Pwr.off
 
@@ -199,7 +191,6 @@ reset_button.grid(
 )
 
 exit_button = ttk.Button(
-    app,
     text="EXIT",
     command=on_app_closing
 )
