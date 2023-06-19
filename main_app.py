@@ -19,10 +19,10 @@ app.title("DBController")
 
 # Defining function for app opening
 def on_app_opening():
+    print("Init Complete! Powering On...")
     Pwr.setdownoff()
     Pwr.setupoff()
     Pwr.setmainon()
-    print("Init Complete !")
 
 
 # Defining function for app close
