@@ -50,7 +50,7 @@ up_button.grid(
 stop_button = ttk.Button(
     app,
     text="STOP",
-    command=lambda: [Bridge.stop(), alleenable()]
+    command=lambda: [Bridge.stop(), allenable()]
 
 )
 stop_button.grid(
