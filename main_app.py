@@ -34,7 +34,7 @@ def on_app_closing():
 up_button = ttk.Button(
     app,
     text="UP",
-    command=lambda: [Bridge.commandup(), downfalse()]
+    command=lambda: [Bridge.commandup(), downdisable()]
 )
 up_button.grid(
     row=1,
@@ -69,6 +69,7 @@ down_button = ttk.Button(
     command=Bridge.commanddown
 
 )
+
 down_button.grid(
     row=3,
     column=1,
@@ -76,6 +77,20 @@ down_button.grid(
     ipadx=125,
     sticky=""
 )
+
+
+def downdisable():
+    down_button.configure(state="disable")
+
+
+def updisable():
+    up_button.configure(state="disable")
+
+
+def allenable():
+    up_button.configure(state="enable")
+    down_button.configure(state="enable")
+
 
 # GetState Button
 
