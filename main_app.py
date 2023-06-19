@@ -34,7 +34,7 @@ def on_app_closing():
 up_button = ttk.Button(
     app,
     text="UP",
-    command=Bridge.commandup
+    command=lambda: [Bridge.commandup(), downdisable()]
 )
 up_button.grid(
     row=1,
@@ -50,7 +50,7 @@ up_button.grid(
 stop_button = ttk.Button(
     app,
     text="STOP",
-    command=Bridge.stop
+    command=lambda: [Bridge.stop(), alleenable()]
 
 )
 stop_button.grid(
@@ -66,7 +66,7 @@ stop_button.grid(
 down_button = ttk.Button(
     app,
     text="DOWN",
-    command=Bridge.commanddown
+    command=lambda: [Bridge.commanddown(), updisable()]
 
 )
 down_button.grid(
@@ -90,6 +90,19 @@ getstate_button.grid(
     column=2,
     sticky=""
 )
+
+
+def downdisable():
+    down_button.configure(state="disable")
+
+
+def updisable():
+    up_button.configure(state="disable")
+
+
+def allenable():
+    up_button.configure(state="enable")
+    down_button.configure(state="enable")
 
 
 # START OF TESTING SECTION ##############################################################################
