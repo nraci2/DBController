@@ -123,7 +123,7 @@ downlock_switch = ttk.Checkbutton(
     app,
     text="Downlock",
     variable=dlv,
-    command=setdl,
+    command=lambda: [setdl(), allenable()]
 
 )
 downlock_switch.grid(
@@ -147,7 +147,7 @@ uplock_switch = ttk.Checkbutton(
     app,
     text="Uplock",
     variable=ulv,
-    command=setul
+    command=lambda: [setul(), allenable()]
 
 )
 uplock_switch.grid(
