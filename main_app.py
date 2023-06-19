@@ -22,6 +22,7 @@ def on_app_opening():
     Pwr.setdownoff()
     Pwr.setupoff()
     Pwr.setmainon()
+    print("Init Complete !")
 
 
 # Defining function for app close
