@@ -2,7 +2,7 @@ import time
 import threading
 from power_control import Power
 
-Pwr = Power(False, False, False, False)
+Pwr = Power(False, False, False, False, False)
 
 
 class Drawbridge:

@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from drawbridge_control import Drawbridge
+import power_control
 from power_control import Power
 
 # Creating Main App
@@ -11,7 +12,7 @@ app.title("DBController")
 # Defining Drawbridge object
 
 Bridge = Drawbridge(False, False, False, False)
-Pwr = Power(False, False, False, False)
+Pwr = Power(False, False, False, False, False)
 
 
 # Defining function for app opening
@@ -172,7 +173,7 @@ failed_switch = ttk.Checkbutton(
 
 powerio = ttk.Button(
     text="Power IO",
-    command=Pwr.getio
+    command=power_control.getio
 
 )
 powerio.grid(

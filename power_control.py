@@ -33,13 +33,22 @@ GPIO.setup(int(up_pin), GPIO.OUT)  # UP power setup
 GPIO.setup(int(down_pin), GPIO.OUT)  # DOWN power setup
 
 
+# To get IO values in maintenance screen
+def getio():
+    print("Main " + main_pin + main_mode)
+    print("Up: " + up_pin + up_mode)
+    print("Down: " + down_pin + down_mode)
+    print("EPO: " + epo_pin + epo_mode)
+
+
 class Power:
 
-    def __init__(self, mainon, upon, downon, isepo):
+    def __init__(self, mainon, upon, downon, isepo, alloff):
         self.mainon = mainon
         self.upon = upon
         self.downon = downon
         self.isepo = isepo
+        self.alloff = alloff
 
     def getstate(self):
         print("Main ON: " + str(self.mainon))
@@ -47,15 +56,10 @@ class Power:
         print("Down On: " + str(self.downon))
         print("Is EPO: " + str(self.isepo))
 
-    def getio(self):
-        print("Main " + main_pin + main_mode)
-        print("Up: " + up_pin + up_mode)
-        print("Down: " + down_pin + down_mode)
-        print("EPO: " + epo_pin + epo_mode)
-
     # To reset all relays to unpowered state
 
     def off(self):
+        self.alloff = True
         print("Setting all relays to unpowered state.")
         GPIO.output(int(main_pin), 1)
         GPIO.output(int(up_pin), 1)
