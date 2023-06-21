@@ -72,13 +72,11 @@ class Drawbridge:
                     Pwr.setdownon()
                     print("In Transit(Down): " + str(self.ismoving))
 
-
             Pwr.setdownoff()
             self.ismoving = False
 
             if self.isdown:
                 print("Downlock: " + str(self.isdown))
-
 
         if not self.ismoving and not self.isdown:
             self.ismoving = True
