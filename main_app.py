@@ -28,7 +28,6 @@ def on_app_closing():
     app.destroy()
 
 
-
 #  UP Button
 
 up_button = ttk.Button(
@@ -42,7 +41,7 @@ up_button.grid(
     ipady=50,
     ipadx=125,
     sticky=""
-    
+
 )
 
 # STOP Button
@@ -118,6 +117,8 @@ downlock_switch.grid(
     column=2,
     sticky=""
 )
+
+
 # Uplock Simulation
 
 def setul():
@@ -142,6 +143,8 @@ uplock_switch.grid(
     column=2,
     sticky=""
 )
+
+
 # Uplock Simulation
 
 def setfail():
@@ -157,7 +160,7 @@ failed_switch = ttk.Checkbutton(
     command=setfail
 
 )
-#failed_switch.pack()
+# failed_switch.pack()
 
 # Get Power IO config
 
@@ -200,7 +203,7 @@ exit_button.grid(
 # END OF TESTING SECTION ##############################################################################
 
 # App Main Loop
-#app.attributes('-fullscreen', True)
+# app.attributes('-fullscreen', True)
 app.wait_visibility()
 Pwr.setmainon()
 app.protocol("WM_DELETE_WINDOW", on_app_closing)

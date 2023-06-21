@@ -1,4 +1,3 @@
-import time
 from configparser import ConfigParser
 import RPi.GPIO as GPIO
 
