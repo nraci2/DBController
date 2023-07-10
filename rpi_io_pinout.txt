@@ -28,7 +28,7 @@ Control Relay Module:
 Downswitch/Upswitch Monitoring:
 
     DS1(IN): GPIO5
-    DS2(IN): GPIO5
+    DS2(IN): GPIO6
     US1(IN): GPIO13
     US2(IN): GPIO26
 

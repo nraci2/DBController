@@ -12,7 +12,7 @@ app.title("DBController")
 # Defining Drawbridge object
 
 Bridge = Drawbridge(False, False, False, False)
-Pwr = Power(False, False, False, False, False)
+Pwr = Power(False, False, False, False, False, False)
 
 
 # Defining function for app opening
