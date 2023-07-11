@@ -13,12 +13,6 @@ class Drawbridge:
         self.isdown = isdown
         self.isfailed = isfailed
 
-    def getstate(self):
-        print("In transit: " + str(self.ismoving))
-        print("Uplock: " + str(self.isup))
-        print("Downlock: " + str(self.isdown))
-        print("Failed: " + str(self.isfailed))
-
     # Drawbridge Up Command Method
     def commandup(self):
 
