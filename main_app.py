@@ -3,62 +3,84 @@ from tkinter import ttk
 from tkinter import Frame
 from drawbridge_control import Drawbridge
 import power_control
-from power_control import Power
-import threading
+from power_control import Power, LimitSwitches
 import time
+import threading
+
 
 ### MAIN APP CREATION ###
 
+# Monitoring Class
+
+
+class Monitoring:
+
+    def __init__(self, state, abort):
+        self.state = state
+        self.abort = abort
+
+    def stop(self):
+        print("Attempting to close monitoring loop...")
+        self.state = False
+        self.abort = True
+
+    def start(self):
+        if self.state:
+            print("Monitoring is already: " + str(self.state))
+
+        def label_update_call():
+            print("Loop Started in thread")
+
+            while self.state:
+                time.sleep(0.1)
+                if not self.abort:
+                    label_update()
+                elif self.abort:
+                    break
+
+            print("Loop broke in thread. State = " + str(self.state) + " ABORT = " + str(self.abort))
+
+        if not self.state:
+            print("Attempting to start monitoring loop...")
+            self.state = True
+            mon_t = threading.Thread(target=label_update_call)
+            mon_t.start()
+
+
+### TKINTER WINDOW SETUP ###
 app = tk.Tk()
 app.title("DBController")
 main_app_frame = Frame(app)
 main_app_frame.pack(fill=tk.BOTH, expand=1)
 status_labels_frame = Frame(app)
-### DRAWBRIDGE AND POWER OBJECTS ###
 
+### DRAWBRIDGE, POWER AND MONITORING OBJECTS ###
 Bridge = Drawbridge(False, False, False, False)
 Pwr = Power(False, False, False, False, False, False)
+LimSW = LimitSwitches(False, False, False, False)
+Monitoring = Monitoring(False, False)
 
 
-### MONITORING LOOP ###
-def set_label_states():
-    down_label_var.set(str(Bridge.isdown))
-    up_label_var.set(str(Bridge.isup))
+### LABEL UPDATE FUNCTION CALLED BY MONITORING CLASS
+def label_update():
+    downlock_label_var.set(str(Bridge.isdown))
+    uplock_label_var.set(str(Bridge.isup))
     transit_label_var.set(str(Bridge.ismoving))
+    monloop_label_var.set(str(Monitoring.state))
 
-
-monloop = False
-
-
-def stop_monitoring_loop():
-    print("Attempting to close monitoring loop...")
-    global monloop
-    monloop = False
-
-
-def monitoring_loop():
-    global monloop
-    print("Attempting to start monitoring loop...")
-
-    def get_switch_states():
-        global monloop
-        print("Loop Started in thread")
-        while monloop:
-            time.sleep(0.1)
-            if monloop:
-                set_label_states()
-
-        print("Loop broke in thread")
-
-    if not monloop:
-        monloop = True
-        mon_t = threading.Thread(target=get_switch_states)
-        mon_t.start()
+    LimSW.get_up1()
+    up1_label_var.set(str(LimSW.up1))
+    LimSW.get_up2()
+    up2_label_var.set(str(LimSW.up2))
+    LimSW.get_dw1()
+    dw1_label_var.set(str(LimSW.dw1))
+    LimSW.get_dw2()
+    dw2_label_var.set(str(LimSW.dw2))
 
 
 ### FUNCTIONS TO RUN ON APP OPENING ###
 def on_app_opening():
-    monitoring_loop()
+    Monitoring.start()
     Pwr.setdownoff()
     Pwr.setupoff()
     Pwr.setmainon()
@@ -66,7 +88,9 @@ def on_app_opening():
 
 ### FUNCTIONS TO RUN ON APP CLOSING ###
 def on_app_closing():
-    stop_monitoring_loop()
+    Monitoring.stop()
+    print("Waiting for monitoring loop to stop...")
+    time.sleep(2)
     Bridge.stop()
     Pwr.off()
     app.destroy()
@@ -137,6 +161,29 @@ def allenable():
 
 
 ### STATUS LABELS ###
+# Monitoring loop decorative label
+monloop_label = ttk.Label(
+    status_labels_frame,
+    text="MONITORING LOOP: "
+)
+monloop_label.grid(
+    row=0,
+    column=2,
+    sticky="w"
+)
+
+# Monitoring loop status label
+monloop_label_var = tk.StringVar()
+
+monloop_status_label = ttk.Label(
+    status_labels_frame,
+    textvariable=monloop_label_var
+)
+monloop_status_label.grid(
+    row=0,
+    column=3,
+    sticky="w"
+)
 # Transit decorative label
 transit_label = ttk.Label(
     status_labels_frame,
@@ -144,8 +191,10 @@ transit_label = ttk.Label(
 )
 transit_label.grid(
     row=1,
-    column=3
+    column=2,
+    sticky="w"
 )
+
 # Transit Status Label
 transit_label_var = tk.StringVar()
 
@@ -155,104 +204,151 @@ transit_status_label = ttk.Label(
 )
 transit_status_label.grid(
     row=1,
-    column=4
+    column=3,
+    sticky="w"
 )
 
-# Upswitch decorative labels
-up_label_S1 = ttk.Label(
+# Uplock decorative labels
+uplock_label_S1 = ttk.Label(
     status_labels_frame,
-    text="UPSWITCH1(S1): "
+    text="UPLOCK: "
 )
-up_label_S1.grid(
+uplock_label_S1.grid(
+    row=2,
+    column=2,
+    sticky="w"
+)
+# Uplock status label
+uplock_label_var = tk.StringVar()
+
+uplock_status_label = ttk.Label(
+    status_labels_frame,
+    textvariable=uplock_label_var
+)
+uplock_status_label.grid(
     row=2,
     column=3,
     sticky="w"
 )
-# Upswitch status label
-up_label_var = tk.StringVar()
 
-up_status_label = ttk.Label(
+# Downlock decorative labels
+downlock_label_S3 = ttk.Label(
     status_labels_frame,
-    textvariable=up_label_var
+    text="DOWNLOCK: "
 )
-up_status_label.grid(
-    row=2,
-    column=4,
+downlock_label_S3.grid(
+    row=3,
+    column=2,
+    sticky="w"
 )
 
-# Downswitch decorative labels
-down_label_S3 = ttk.Label(
+# Downlock status label
+downlock_label_var = tk.StringVar()
+downlock_status_label = ttk.Label(
+    status_labels_frame,
+    textvariable=downlock_label_var
+)
+downlock_status_label.grid(
+    row=3,
+    column=3,
+    sticky="w"
+)
+
+# Upswitch 1 decorative label
+up1_label = ttk.Label(
+    status_labels_frame,
+    text="UPSWITCH1(S1): "
+)
+up1_label.grid(
+    row=4,
+    column=2,
+    sticky="w"
+)
+
+# Upswitch 1 status label
+up1_label_var = tk.StringVar()
+up1_status_label = ttk.Label(
+    status_labels_frame,
+    textvariable=up1_label_var
+)
+up1_status_label.grid(
+    row=4,
+    column=3,
+    sticky="w"
+)
+
+# Upswitch 2 decorative label
+up2_label = ttk.Label(
+    status_labels_frame,
+    text="UPSWITCH2(S5): "
+)
+up2_label.grid(
+    row=5,
+    column=2,
+    sticky="w"
+)
+
+# Upswitch 2 status label
+up2_label_var = tk.StringVar()
+up2_status_label = ttk.Label(
+    status_labels_frame,
+    textvariable=up2_label_var
+)
+up2_status_label.grid(
+    row=5,
+    column=3,
+    sticky="w"
+)
+
+# Downswitch 1 decorative label
+dw1_label = ttk.Label(
     status_labels_frame,
     text="DOWNSWITCH1(S3): "
 )
-down_label_S3.grid(
-    row=3,
-    column=3,
+dw1_label.grid(
+    row=6,
+    column=2,
+    sticky="w"
 )
 
-# Downswitch status label
-down_label_var = tk.StringVar()
-
-down_status_label = ttk.Label(
+# Downswitch 1 status label
+dw1_label_var = tk.StringVar()
+dw1_status_label = ttk.Label(
     status_labels_frame,
-    textvariable=down_label_var
+    textvariable=dw1_label_var
 )
-down_status_label.grid(
-    row=3,
-    column=4,
+dw1_status_label.grid(
+    row=6,
+    column=3,
+    sticky="w"
+)
+
+# Downswitch 2 decorative label
+dw2_label = ttk.Label(
+    status_labels_frame,
+    text="DOWNSWITCH2(S4): "
+)
+dw2_label.grid(
+    row=7,
+    column=2,
+    sticky="w"
+)
+
+# Downswitch 2 status label
+dw2_label_var = tk.StringVar()
+dw2_status_label = ttk.Label(
+    status_labels_frame,
+    textvariable=dw2_label_var
+)
+dw2_status_label.grid(
+    row=7,
+    column=3,
+    sticky="w"
 )
 
 
 ### START OF TESTING SECTION ##############################################################################
 
-# Downlock Simulation
-
-def setdl():
-    Bridge.isdown = dlv.get()
-    if Bridge.isdown:
-        uplock_switch.configure(state="disable")
-    else:
-        uplock_switch.configure(state="normal")
-
-
-dlv = tk.BooleanVar()
-
-downlock_switch = ttk.Checkbutton(
-    main_app_frame,
-    text="Downlock",
-    variable=dlv,
-    command=lambda: [setdl(), allenable()]
-
-)
-downlock_switch.grid(
-    row=2,
-    column=2,
-)
-
-
-# Uplock Simulation
-
-def setul():
-    Bridge.isup = ulv.get()
-    if Bridge.isup:
-        downlock_switch.configure(state="disable")
-    else:
-        downlock_switch.configure(state="normal")
-
-
-ulv = tk.BooleanVar()
-
-uplock_switch = ttk.Checkbutton(
-    main_app_frame,
-    text="Uplock",
-    variable=ulv,
-    command=lambda: [setul(), allenable()]
-
-)
-uplock_switch.grid(
-    row=3,
-    column=2,
-)
 
 # Get Power IO config
 
